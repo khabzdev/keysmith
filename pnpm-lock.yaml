@@ -66,7 +66,7 @@ importers:
     dependencies:
       '@keysmith/core':
         specifier: workspace:*
-        version: link:../../packages/keysmith
+        version: link:../../packages/core
       '@tanstack/query-core':
         specifier: ^5.0.0
         version: 5.96.2
@@ -81,7 +81,7 @@ importers:
         specifier: 'catalog:'
         version: 0.1.16(@types/node@25.5.2)(@voidzero-dev/vite-plus-core@0.1.16(@types/node@25.5.2)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
 
-  packages/keysmith:
+  packages/core:
     devDependencies:
       '@tanstack/query-core':
         specifier: ^5.0.0
