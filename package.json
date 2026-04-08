@@ -6,6 +6,7 @@
   "scripts": {
     "ready": "vp fmt && vp lint && vp run @keysmith/core#test && vp run @keysmith/core#build && vp run website#build",
     "dev": "vp run website#dev",
+    "dev:vue": "vp run vue#dev",
     "prepare": "vp config"
   },
   "devDependencies": {
