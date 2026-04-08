@@ -9,9 +9,9 @@ const editing = ref(false);
 const editTitle = ref("");
 const editPriority = ref<Priority>("medium");
 
-const { mutate: toggle } = useToggleTodo();
-const { mutate: remove } = useDeleteTodo();
-const { mutate: update } = useUpdateTodo();
+const { mutate: toggle } = useToggleTodo(props.todo.id);
+const { mutate: remove } = useDeleteTodo(props.todo.id);
+const { mutate: update } = useUpdateTodo(props.todo.id);
 
 function startEdit() {
   editTitle.value = props.todo.title;
@@ -22,7 +22,7 @@ function startEdit() {
 function saveEdit() {
   const t = editTitle.value.trim();
   if (!t) return cancelEdit();
-  update({ id: props.todo.id, title: t, priority: editPriority.value });
+  update({ title: t, priority: editPriority.value });
   editing.value = false;
 }
 
@@ -36,7 +36,7 @@ function cancelEdit() {
     <!-- Checkbox -->
     <button
       class="checkbox"
-      @click="toggle(todo.id)"
+      @click="toggle()"
       :aria-label="todo.completed ? 'Mark incomplete' : 'Mark complete'"
     >
       <span class="check-mark" :class="{ checked: todo.completed }">
@@ -80,7 +80,7 @@ function cancelEdit() {
     <!-- Actions -->
     <div class="actions" v-if="!editing">
       <button class="edit-btn" @click="startEdit" title="Edit">edit</button>
-      <button class="delete-btn" @click="remove(todo.id)" title="Delete">&times;</button>
+      <button class="delete-btn" @click="remove()" title="Delete">&times;</button>
     </div>
   </div>
 </template>

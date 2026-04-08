@@ -4,15 +4,18 @@ Type-safe query key factories for [TanStack Query](https://tanstack.com/query).
 
 ## Packages
 
-| Package                                | Description                          | npm                                                                                                           |
-| -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| [`@querykeysmith/core`](packages/core) | Framework-agnostic query key factory | [![npm](https://img.shields.io/npm/v/@querykeysmith/core)](https://www.npmjs.com/package/@querykeysmith/core) |
+| Package                                          | Description                                             | npm                                                                                                                     |
+| ------------------------------------------------ | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [`@querykeysmith/core`](packages/core)           | Framework-agnostic query key factory                    | [![npm](https://img.shields.io/npm/v/@querykeysmith/core)](https://www.npmjs.com/package/@querykeysmith/core)           |
+| [`@querykeysmith/mutations`](packages/mutations) | Type-safe mutation factory with co-located invalidation | [![npm](https://img.shields.io/npm/v/@querykeysmith/mutations)](https://www.npmjs.com/package/@querykeysmith/mutations) |
 
 ## Quick Start
 
 ```bash
-npm install @querykeysmith/core @tanstack/query-core
+npm install @querykeysmith/core @querykeysmith/mutations @tanstack/query-core
 ```
+
+### Query factory
 
 ```typescript
 import { createQueryFactory } from "@querykeysmith/core";
@@ -41,6 +44,35 @@ const user = queryClient.getQueryData(userQueries.detail("123").queryKey);
 //    ^? User | undefined
 ```
 
+### Mutation factory
+
+```typescript
+import { createMutationFactory, resolveInvalidateKey } from "@querykeysmith/mutations";
+
+const userMutations = createMutationFactory("users", {
+  update: (id: string) => ({
+    mutationFn: (data: Partial<User>) => api.updateUser(id, data),
+    invalidates: [
+      userQueries.detail(id), // invalidate this specific user
+      userQueries.list._def, // invalidate all list queries
+    ],
+  }),
+});
+
+// In a React/Vue composable:
+const { invalidates, ...opts } = userMutations.update(user.id);
+
+useMutation({
+  ...opts,
+  onSuccess: () =>
+    Promise.all(
+      invalidates.map((entry) =>
+        client.invalidateQueries({ queryKey: resolveInvalidateKey(entry) }),
+      ),
+    ),
+});
+```
+
 ## Development
 
 ```bash
@@ -66,7 +98,7 @@ vp run vue#dev
 ## Publishing
 
 ```bash
-cd packages/core
+cd packages/core        # or packages/mutations
 npx bumpp
 npm publish --access public
 ```

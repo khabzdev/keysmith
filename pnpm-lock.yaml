@@ -30,6 +30,9 @@ importers:
       '@querykeysmith/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@querykeysmith/mutations':
+        specifier: workspace:*
+        version: link:../../packages/mutations
       '@tanstack/query-core':
         specifier: ^5.0.0
         version: 5.96.2
@@ -92,6 +95,30 @@ importers:
 
   packages/core:
     devDependencies:
+      '@tanstack/query-core':
+        specifier: ^5.0.0
+        version: 5.96.2
+      '@types/node':
+        specifier: ^25.5.0
+        version: 25.5.2
+      '@typescript/native-preview':
+        specifier: 7.0.0-dev.20260328.1
+        version: 7.0.0-dev.20260328.1
+      bumpp:
+        specifier: ^11.0.1
+        version: 11.0.1
+      typescript:
+        specifier: ^6.0.2
+        version: 6.0.2
+      vite-plus:
+        specifier: ^0.1.14
+        version: 0.1.16(@types/node@25.5.2)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.7(@types/node@25.5.2)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
+
+  packages/mutations:
+    devDependencies:
+      '@querykeysmith/core':
+        specifier: workspace:*
+        version: link:../core
       '@tanstack/query-core':
         specifier: ^5.0.0
         version: 5.96.2
