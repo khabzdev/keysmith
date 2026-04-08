@@ -1,4 +1,4 @@
-import { createQueryFactory } from "@keysmith/core";
+import { createQueryFactory } from "@querykeysmith/core";
 import { storage } from "../lib/storage";
 
 /**

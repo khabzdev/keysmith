@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/query-core";
-import { createQueryFactory } from "@keysmith/core";
+import { createQueryFactory } from "@querykeysmith/core";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

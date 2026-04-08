@@ -27,7 +27,7 @@ importers:
 
   apps/vue:
     dependencies:
-      '@keysmith/core':
+      '@querykeysmith/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@tanstack/query-core':
@@ -73,7 +73,7 @@ importers:
 
   apps/website:
     dependencies:
-      '@keysmith/core':
+      '@querykeysmith/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@tanstack/query-core':

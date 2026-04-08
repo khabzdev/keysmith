@@ -10,7 +10,7 @@
     "test": "vp check"
   },
   "dependencies": {
-    "@keysmith/core": "workspace:*",
+    "@querykeysmith/core": "workspace:*",
     "@tanstack/query-core": "^5.0.0"
   },
   "devDependencies": {

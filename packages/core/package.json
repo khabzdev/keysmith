@@ -1,16 +1,17 @@
 {
-  "name": "@keysmith/core",
+  "name": "@querykeysmith/core",
   "version": "0.0.1",
   "description": "Type-safe, framework-agnostic TanStack Query key factory.",
-  "homepage": "https://github.com/author/tanstack-query-factory#readme",
+  "homepage": "https://github.com/khabzdev/keysmith#readme",
   "bugs": {
-    "url": "https://github.com/author/tanstack-query-factory/issues"
+    "url": "https://github.com/khabzdev/keysmith/issues"
   },
   "license": "MIT",
-  "author": "Author Name <author.name@mail.com>",
+  "author": "Ndivhuwo Khabubu <ndivhuwo.khabubu@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/author/tanstack-query-factory.git"
+    "url": "git+https://github.com/khabzdev/keysmith.git",
+    "directory": "packages/core"
   },
   "files": [
     "dist"

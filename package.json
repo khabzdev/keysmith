@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ready": "vp fmt && vp lint && vp run @keysmith/core#test && vp run @keysmith/core#build && vp run website#build",
+    "ready": "vp fmt && vp lint && vp run @querykeysmith/core#test && vp run @querykeysmith/core#build && vp run website#build",
     "dev": "vp run website#dev",
     "dev:vue": "vp run vue#dev",
     "prepare": "vp config"

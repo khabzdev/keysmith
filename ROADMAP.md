@@ -2,7 +2,7 @@
 
 ## Released
 
-### `@keysmith/core`
+### `@querykeysmith/core`
 
 Type-safe, framework-agnostic TanStack Query key factory. Co-locates query keys and query functions, provides hierarchical `._def` keys for scoped cache invalidation, and uses `DataTag` from `@tanstack/query-core` for full type inference through `QueryClient`.
 
