@@ -12,6 +12,9 @@
     "format": "vp fmt src/"
   },
   "dependencies": {
+    "@keysmith/core": "workspace:*",
+    "@tanstack/query-core": "^5.0.0",
+    "@tanstack/vue-query": "^5.0.0",
     "vue": "^3.5.31"
   },
   "devDependencies": {
