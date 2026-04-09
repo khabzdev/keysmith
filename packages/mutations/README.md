@@ -166,6 +166,31 @@ The `invalidates` field accepts a mix of:
 
 These are passed to `resolveInvalidateKey` in your framework adapter's `onSuccess` to call `invalidateQueries`.
 
+### `mergeMutationFactories(factories)`
+
+Groups multiple mutation factories under named keys for a single import point. An identity function — returns the input unchanged, so all mutation keys, `._def` values, and TypeScript types are fully preserved.
+
+```typescript
+// mutations/index.ts
+import { mergeMutationFactories } from "@querykeysmith/mutations";
+import { userMutations } from "./users";
+import { postMutations } from "./posts";
+
+export const mutations = mergeMutationFactories({
+  users: userMutations,
+  posts: postMutations,
+});
+
+// In components — one import, all types preserved
+mutations.users.update("123"); // → { mutationKey: ['users', 'update', '123'], ... }
+mutations.users._def; // → ['users']
+mutations.posts.create(); // → { mutationKey: ['posts', 'create'], ... }
+```
+
+> The merged container has no `._def` of its own — namespaces remain independent.
+
+---
+
 ## Key Structure
 
 Mutation keys follow the same structure as query keys:

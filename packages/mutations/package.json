@@ -1,6 +1,6 @@
 {
   "name": "@querykeysmith/mutations",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Type-safe mutation factory for TanStack Query with co-located invalidation.",
   "homepage": "https://github.com/khabzdev/keysmith#readme",
   "bugs": {

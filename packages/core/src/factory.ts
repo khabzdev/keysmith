@@ -1,6 +1,29 @@
 import type { DefinitionsMap, QueryFactory } from "./types.ts";
 
 /**
+ * Groups multiple query factories under named keys for a single import point.
+ *
+ * A purely organisational utility — returns the same factory objects unchanged,
+ * so all query keys, ._def values, and TypeScript types are fully preserved.
+ * The merged container has no ._def of its own; namespaces remain independent.
+ *
+ * @example
+ * export const queries = mergeQueryFactories({
+ *   users: userQueries,
+ *   posts: postQueries,
+ * });
+ *
+ * queries.users.detail("1").queryKey  // → ['users', 'detail', '1'] — unchanged
+ * queries.users._def                  // → ['users']
+ * queries.posts.list().queryKey       // → ['posts', 'list'] — unchanged
+ */
+export function mergeQueryFactories<
+  const T extends Record<string, { readonly _def: readonly unknown[] }>,
+>(factories: T): T {
+  return factories;
+}
+
+/**
  * Creates a type-safe, framework-agnostic query factory for a given namespace.
  *
  * Each definition produces a callable that returns full queryOptions-compatible

@@ -1,7 +1,11 @@
 import { createQueryFactory } from "@querykeysmith/core";
 import type { MutationKey } from "@tanstack/query-core";
 import { expect, expectTypeOf, test } from "vite-plus/test";
-import { createMutationFactory, resolveInvalidateKey } from "../src/index.ts";
+import {
+  createMutationFactory,
+  mergeMutationFactories,
+  resolveInvalidateKey,
+} from "../src/index.ts";
 
 // ── Shared fixtures ──────────────────────────────────────────────────────────
 
@@ -200,4 +204,31 @@ test("mutationFn return type is Promise<TData>", () => {
 
 test("_def carries the literal namespace type", () => {
   expectTypeOf(userMutations._def).toEqualTypeOf<MutationKey & readonly ["users"]>();
+});
+
+// ── 24. mergeMutationFactories ────────────────────────────────────────────────
+
+const postMutations = createMutationFactory("posts", {
+  create: () => ({
+    mutationFn: (data: { title: string }) => Promise.resolve({ id: 1, ...data }),
+  }),
+});
+
+const mergedMutations = mergeMutationFactories({ users: userMutations, posts: postMutations });
+
+test("mergeMutationFactories: mutationKey of first factory unchanged", () => {
+  expect(mergedMutations.users.update("1").mutationKey).toEqual(["users", "update", "1"]);
+});
+
+test("mergeMutationFactories: _def of first factory unchanged", () => {
+  expect(mergedMutations.users._def).toEqual(["users"]);
+});
+
+test("mergeMutationFactories: mutationKey of second factory unchanged", () => {
+  expect(mergedMutations.posts.create().mutationKey).toEqual(["posts", "create"]);
+});
+
+test("mergeMutationFactories: returns same object references (identity)", () => {
+  expect(mergedMutations.users).toBe(userMutations);
+  expect(mergedMutations.posts).toBe(postMutations);
 });

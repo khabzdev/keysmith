@@ -1,4 +1,4 @@
-export { createMutationFactory, resolveInvalidateKey } from "./factory.ts";
+export { createMutationFactory, mergeMutationFactories, resolveInvalidateKey } from "./factory.ts";
 export type {
   BuiltMutationDefinition,
   BuiltMutationOptions,

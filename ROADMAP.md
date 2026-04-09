@@ -27,6 +27,40 @@ const userMutations = createMutationFactory("users", {
 
 ---
 
+### `mergeQueryFactories` / `mergeMutationFactories`
+
+**Priority: Low**
+
+Convenience utilities for teams that split factories across per-domain files (`users.ts`, `posts.ts`, etc.). Groups them under named keys for a single import point — no key changes, zero runtime cost.
+
+```typescript
+// queries/index.ts
+export const queries = mergeQueryFactories({
+  users: userQueries,
+  posts: postQueries,
+});
+
+// mutations/index.ts
+export const mutations = mergeMutationFactories({
+  users: userMutations,
+  posts: postMutations,
+});
+
+// In components — one import, full type inference preserved
+queries.users.detail("1").queryKey; // → ['users', 'detail', '1']
+queries.posts.list().queryKey; // → ['posts', 'list']
+mutations.users.update("1"); // → { mutationKey: ['users', 'update', '1'], ... }
+```
+
+**Design notes:**
+
+- Both functions are identity functions — they return the input unchanged
+- All query/mutation keys, `._def` values, and TypeScript types are fully preserved
+- The merged container has no `_def` of its own — namespaces remain independent
+- Cross-namespace invalidation still requires separate `invalidateQueries` calls per factory
+
+---
+
 ### `@keysmith/react`
 
 **Priority: High**

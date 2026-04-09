@@ -2,7 +2,7 @@ import { createMutationFactory, resolveInvalidateKey } from "@querykeysmith/muta
 import type { InvalidatesEntry } from "@querykeysmith/mutations";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { storage } from "../lib/storage";
-import { todoQueries } from "../queries/todos";
+import { queries } from "../queries/index";
 import { useKeysmithBus } from "../composables/useKeysmithBus";
 import type { Priority, Todo } from "../types";
 
@@ -14,18 +14,18 @@ export const todoMutations = createMutationFactory("todos", {
   create: () => ({
     mutationFn: ({ title, priority }: { title: string; priority: Priority }) =>
       Promise.resolve(storage.create(title, priority)),
-    invalidates: [todoQueries._def],
+    invalidates: [queries.todos._def],
   }),
 
   toggle: (id: string) => ({
     mutationFn: (_: void) => Promise.resolve(storage.toggle(id)),
-    invalidates: [todoQueries._def, todoQueries.detail(id)],
+    invalidates: [queries.todos._def, queries.todos.detail(id)],
   }),
 
   update: (id: string) => ({
     mutationFn: ({ title, priority }: { title: string; priority: Priority }) =>
       Promise.resolve(storage.update(id, { title, priority })),
-    invalidates: [todoQueries.list._def, todoQueries.detail(id)],
+    invalidates: [queries.todos.list._def, queries.todos.detail(id)],
   }),
 
   delete: (id: string) => ({
@@ -33,7 +33,7 @@ export const todoMutations = createMutationFactory("todos", {
       storage.remove(id);
       return Promise.resolve();
     },
-    invalidates: [todoQueries._def],
+    invalidates: [queries.todos._def],
   }),
 
   clearCompleted: () => ({
@@ -41,7 +41,7 @@ export const todoMutations = createMutationFactory("todos", {
       storage.clearCompleted();
       return Promise.resolve();
     },
-    invalidates: [todoQueries._def],
+    invalidates: [queries.todos._def],
   }),
 });
 
@@ -68,7 +68,7 @@ export function useCreateTodo() {
   return useMutation({
     ...opts,
     onSuccess: async () => {
-      bus.emit("namespace", todoQueries._def, "todoQueries._def");
+      bus.emit("namespace", queries.todos._def, "queries.todos._def");
       await invalidateAll(invalidates, client);
     },
   });
@@ -82,11 +82,11 @@ export function useToggleTodo(id: string) {
   return useMutation({
     ...opts,
     onSuccess: async (todo: Todo) => {
-      bus.emit("namespace", todoQueries._def, "todoQueries._def");
+      bus.emit("namespace", queries.todos._def, "queries.todos._def");
       bus.emit(
         "instance",
-        todoQueries.detail(todo.id).queryKey,
-        `todoQueries.detail('${todo.id}')`,
+        queries.todos.detail(todo.id).queryKey,
+        `queries.todos.detail('${todo.id}')`,
       );
       await invalidateAll(invalidates, client);
     },
@@ -101,11 +101,11 @@ export function useUpdateTodo(id: string) {
   return useMutation({
     ...opts,
     onSuccess: async (todo: Todo) => {
-      bus.emit("definition", todoQueries.list._def, "todoQueries.list._def");
+      bus.emit("definition", queries.todos.list._def, "queries.todos.list._def");
       bus.emit(
         "instance",
-        todoQueries.detail(todo.id).queryKey,
-        `todoQueries.detail('${todo.id}')`,
+        queries.todos.detail(todo.id).queryKey,
+        `queries.todos.detail('${todo.id}')`,
       );
       await invalidateAll(invalidates, client);
     },
@@ -120,7 +120,7 @@ export function useDeleteTodo(id: string) {
   return useMutation({
     ...opts,
     onSuccess: async () => {
-      bus.emit("namespace", todoQueries._def, "todoQueries._def");
+      bus.emit("namespace", queries.todos._def, "queries.todos._def");
       await invalidateAll(invalidates, client);
     },
   });
@@ -134,7 +134,7 @@ export function useClearCompleted() {
   return useMutation({
     ...opts,
     onSuccess: async () => {
-      bus.emit("namespace", todoQueries._def, "todoQueries._def");
+      bus.emit("namespace", queries.todos._def, "queries.todos._def");
       await invalidateAll(invalidates, client);
     },
   });

@@ -2,6 +2,28 @@ import type { QueryKey } from "@tanstack/query-core";
 import type { InvalidatesEntry, MutationDefinitionsMap, MutationFactory } from "./types.ts";
 
 /**
+ * Groups multiple mutation factories under named keys for a single import point.
+ *
+ * A purely organisational utility — returns the same factory objects unchanged,
+ * so all mutation keys, ._def values, and TypeScript types are fully preserved.
+ * The merged container has no ._def of its own; namespaces remain independent.
+ *
+ * @example
+ * export const mutations = mergeMutationFactories({
+ *   users: userMutations,
+ *   posts: postMutations,
+ * });
+ *
+ * mutations.users.update("1")  // → { mutationKey: ['users', 'update', '1'], ... }
+ * mutations.users._def         // → ['users']
+ */
+export function mergeMutationFactories<
+  const T extends Record<string, { readonly _def: readonly unknown[] }>,
+>(factories: T): T {
+  return factories;
+}
+
+/**
  * Resolves an InvalidatesEntry to a plain QueryKey for use with
  * QueryClient.invalidateQueries({ queryKey: ... }).
  *

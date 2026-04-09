@@ -102,6 +102,31 @@ Each definition is a function that receives your custom arguments and returns an
 }
 ```
 
+### `mergeQueryFactories(factories)`
+
+Groups multiple query factories under named keys for a single import point. An identity function — returns the input unchanged, so all query keys, `._def` values, and TypeScript types are fully preserved.
+
+```typescript
+// queries/index.ts
+import { mergeQueryFactories } from "@querykeysmith/core";
+import { userQueries } from "./users";
+import { postQueries } from "./posts";
+
+export const queries = mergeQueryFactories({
+  users: userQueries,
+  posts: postQueries,
+});
+
+// In components — one import, all types preserved
+queries.users.detail("123").queryKey; // → ['users', 'detail', '123']
+queries.users._def; // → ['users']
+queries.posts.list().queryKey; // → ['posts', 'list']
+```
+
+> The merged container has no `._def` of its own — namespaces remain independent. Cross-namespace invalidation still requires a separate `invalidateQueries` call per factory.
+
+---
+
 ## Key Structure
 
 Keys are structured arrays built from the namespace, definition name, and arguments:

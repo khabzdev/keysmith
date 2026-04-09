@@ -1,4 +1,4 @@
-export { createQueryFactory } from "./factory.ts";
+export { createQueryFactory, mergeQueryFactories } from "./factory.ts";
 export type {
   BuiltDefinition,
   BuiltQueryOptions,

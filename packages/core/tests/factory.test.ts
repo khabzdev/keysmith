@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/query-core";
 import { expect, expectTypeOf, test } from "vite-plus/test";
-import { createQueryFactory } from "../src/index.ts";
+import { createQueryFactory, mergeQueryFactories } from "../src/index.ts";
 
 // ── Shared fixture ──────────────────────────────────────────────────────────
 
@@ -144,4 +144,35 @@ test("_def is frozen (immutable)", () => {
   expect(Object.isFrozen(userQueries._def)).toBe(true);
   expect(Object.isFrozen(userQueries.detail._def)).toBe(true);
   expect(Object.isFrozen(userQueries.detail("1").queryKey)).toBe(true);
+});
+
+// ── 11. mergeQueryFactories ───────────────────────────────────────────────────
+
+const postQueries = createQueryFactory("posts", {
+  list: () => ({
+    queryFn: async () => [{ id: 1, title: "Hello" }],
+  }),
+});
+
+const merged = mergeQueryFactories({ users: userQueries, posts: postQueries });
+
+test("mergeQueryFactories: key structure of first factory unchanged", () => {
+  expect(merged.users.detail("1").queryKey).toEqual(["users", "detail", "1"]);
+});
+
+test("mergeQueryFactories: _def of first factory unchanged", () => {
+  expect(merged.users._def).toEqual(["users"]);
+});
+
+test("mergeQueryFactories: key structure of second factory unchanged", () => {
+  expect(merged.posts.list().queryKey).toEqual(["posts", "list"]);
+});
+
+test("mergeQueryFactories: returns same object references (identity)", () => {
+  expect(merged.users).toBe(userQueries);
+  expect(merged.posts).toBe(postQueries);
+});
+
+test("mergeQueryFactories: type — merged factory preserves source type", () => {
+  expectTypeOf(merged.users).toEqualTypeOf<typeof userQueries>();
 });

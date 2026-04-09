@@ -1,6 +1,6 @@
 {
   "name": "@querykeysmith/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Type-safe, framework-agnostic TanStack Query key factory.",
   "homepage": "https://github.com/khabzdev/keysmith#readme",
   "bugs": {
